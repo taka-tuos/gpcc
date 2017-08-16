@@ -1,0 +1,37 @@
+MAKE	= make -r
+GCC		= gcc
+GPP		= g++
+LD		= ld
+RM		= rm
+CP		= cp
+
+# default
+
+default :
+	$(MAKE) -C as
+	$(MAKE) -C cpp
+	$(MAKE) -C cc1
+	$(MAKE) -C ld
+	$(MAKE) $(TARGET)
+
+# rules
+
+$(TARGET) : $(OBJS_TARGET) Makefile Makefile.in
+	$(GCC) $(OBJS_TARGET) $(LIBS) -o $(TARGET)
+
+# normal rules
+
+%.o : %.c Makefile Makefile.in
+	$(GCC) -c $(CFLAGS) -o $*.o $*.c
+	
+%.o : %.cpp Makefile Makefile.in
+	$(GPP) -c $(CFLAGS) -o $*.o $*.cpp
+
+# commands
+
+clean :
+	$(MAKE) -C as clean
+	$(MAKE) -C cpp clean
+	$(MAKE) -C cc1 clean
+	$(MAKE) -C ld clean
+	-$(RM) *.o
